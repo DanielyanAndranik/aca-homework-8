@@ -115,17 +115,8 @@ namespace Parallelism
                     }
                     else
                     {
-                        while(tasks.Count == maxDegreeOfParallelism)
-                        {
-                            for (int i = 0; i < maxDegreeOfParallelism; i++)
-                            {
-                                if (tasks[i].IsCompleted)
-                                {
-                                    tasks.Remove(tasks[i]);
-                                    break;
-                                }
-                            }
-                        }
+                        tasks.Remove(tasks[Task.WaitAny(tasks.ToArray())]);
+
                         tasks.Add(Task.Factory.StartNew(() => body(item)));
                     }
                 }
